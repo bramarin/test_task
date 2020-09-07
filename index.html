@@ -91,20 +91,20 @@
             <td>comment</td>
           </tr>
       </table>
+      
     </div>
 
     <!-- Bootstrap core JavaScript -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-
+    
     <script>
         $(".level").on("click", function (e) {
             var $button = $(this);
             console.log("trial_page: ", "level_link is pressed")
         });
 
-        // TODO скрывать все меню
         function showContextMenu(type, element){
           if($(element).hasClass("hidden")){
             var parent = $(element).parents( ".cont" );
@@ -124,12 +124,31 @@
             console.log("trial_page: ", "menu revealed")
           }
           else{
-            var contextMenu = document.getElementById("context_menu");
-            contextMenu.remove(); 
-            $(element).addClass('hidden');
-            console.log("trial_page: ", "menu unrevealed")
+            hideContextMenu(element);
           }
         }
+        function hideContextMenu(element){
+          var contextMenu = document.getElementById("context_menu");
+          contextMenu.remove(); 
+          $(element).addClass('hidden');
+          console.log("trial_page: ", "menu unrevealed")
+        }
+
+    </script>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script>
+        $(document).on("click", function(event){
+          if($(event.target).hasClass('context_menu_button'))
+            return;
+          var $trigger = $(".context_menu_button");
+          if($trigger !== event.target && !$trigger.has(event.target).length){
+              /*$(".context_menu").slideUp("fast");*/
+              var contextMenu = document.getElementById("context_menu");
+              var parent = contextMenu.previousSibling; // .cont
+              hideContextMenu(parent.childNodes[0]);
+          } 
+          });
     </script>
 
   </body>
