@@ -2,3 +2,42 @@
 .table-borderless th {
     border: 0;
 }
+
+.section_name {
+    position: relative;
+}
+
+.section_name .section_info {
+    visibility: hidden;
+    width: 200px;
+    background-color:  rgba(247, 247, 247, 0.904);
+    color: rgb(49, 49, 49);
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 5px; 
+    font-size: 80%;
+  
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    top: 85%;
+    left: 10%;
+    margin-left: -60px;  
+    transition: 0s visibility;
+  }
+
+.section_name .section_info::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 20%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent rgba(247, 247, 247, 0.904) transparent;
+}
+
+.section_name:hover .section_info {
+    visibility: visible;
+    transition-delay:0.5s;
+}
