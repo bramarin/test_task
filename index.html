@@ -26,58 +26,66 @@
           <th class="th-sm">Тип</tr>
         </thead>
         <tbody>
-          <tr>
-            <td><button type="button" class="btn btn-teal btn-rounded btn-sm m-0">&#8278;</button></td>
+          <tr class="section">
+            <td class="cont"><button type="button" class="btn btn-teal btn-rounded btn-sm m-0 context_menu_button hidden" 
+              id="context_menu_button" onclick="showContextMenu('section', this)">&#8278;</button></td>
             <td class="section_name">name<span class="section_info">Здесь будет описание раздела</span></td>
             <td>12-12-2021</td>
             <td>12-12-2021</td>
             <td>comment</td>
           </tr>
-          <tr>
-            <td><button type="button" class="btn btn-teal btn-rounded btn-sm m-0">&#8278;</button></td>
+          <tr class="section">
+            <td class="cont"><button type="button" class="btn btn-teal btn-rounded btn-sm m-0 context_menu_button hidden" 
+              id="context_menu_button" onclick="showContextMenu('section', this)">&#8278;</button></td>
             <td class="section_name">name<span class="section_info">Здесь будет описание раздела</span></td>
             <td>12-12-2021</td>
             <td>12-12-2021</td>
             <td>comment</td>
           </tr>
-          <tr>
-            <td><button type="button" class="btn btn-teal btn-rounded btn-sm m-0">&#8278;</button></td>
+          <tr class="section">
+            <td class="cont"><button type="button" class="btn btn-teal btn-rounded btn-sm m-0 context_menu_button hidden" 
+              id="context_menu_button" onclick="showContextMenu('section', this)">&#8278;</button></td>
             <td class="section_name">name<span class="section_info">Здесь будет описание раздела</span></td>
             <td>12-12-2021</td>
             <td>12-12-2021</td>
             <td>article</td>
           </tr>
-          <tr>
-            <td><button type="button" class="btn btn-teal btn-rounded btn-sm m-0">&#8278;</button></td>
-            <td>name</td>
+          <tr class="element">
+            <td class="cont"><button type="button" class="btn btn-teal btn-rounded btn-sm m-0 context_menu_button hidden" 
+              id="context_menu_button" onclick="showContextMenu('element', this)">&#8278;</button></td>
+            <td class="element_name">name</td>
             <td>12-12-2021</td>
             <td>12-12-2021</td>
             <td>comment</td>
           </tr>
-          <tr>
-            <td><button type="button" class="btn btn-teal btn-rounded btn-sm m-0">&#8278;</button></td>
-            <td>name</td>
+          <tr class="element">
+            <td class="cont"><button type="button" class="btn btn-teal btn-rounded btn-sm m-0 context_menu_button hidden" 
+              id="context_menu_button" onclick="showContextMenu('element', this)">&#8278;</button></td>
+            <td class="element_name">name</td>
             <td>12-12-2021</td>
             <td>12-12-2021</td>
             <td>reply</td>
           </tr>
-          <tr>
-            <td><button type="button" class="btn btn-teal btn-rounded btn-sm m-0">&#8278;</button></td>
-            <td>name</td>
+          <tr class="element">
+            <td class="cont"><button type="button" class="btn btn-teal btn-rounded btn-sm m-0 context_menu_button hidden" 
+              id="context_menu_button" onclick="showContextMenu('element', this)">&#8278;</button></td>
+            <td class="element_name">name</td>
             <td>12-12-2021</td>
             <td>12-12-2021</td>
             <td>comment</td>
           </tr>
-          <tr>
-            <td><button type="button" class="btn btn-teal btn-rounded btn-sm m-0">&#8278;</button></td>
-            <td>name</td>
+          <tr class="element">
+            <td class="cont"><button type="button" class="btn btn-teal btn-rounded btn-sm m-0 context_menu_button hidden" 
+              id="context_menu_button" onclick="showContextMenu('element', this)">&#8278;</button></td>
+            <td class="element_name">name</td>
             <td>12-12-2021</td>
             <td>12-12-2021</td>
             <td>comment</td>
           </tr>
-          <tr>
-            <td><button type="button" class="btn btn-teal btn-rounded btn-sm m-0">&#8278;</button></td>
-            <td>name</td>
+          <tr class="element">
+            <td class="cont"><button type="button" class="btn btn-teal btn-rounded btn-sm m-0 context_menu_button hidden" 
+              id="context_menu_button" onclick="showContextMenu('element', this)">&#8278;</button></td>
+            <td class="element_name">name</td>
             <td>12-12-2021</td>
             <td>12-12-2021</td>
             <td>comment</td>
@@ -95,6 +103,33 @@
             var $button = $(this);
             console.log("trial_page: ", "level_link is pressed")
         });
+
+        // TODO скрывать все меню
+        function showContextMenu(type, element){
+          if($(element).hasClass("hidden")){
+            var parent = $(element).parents( ".cont" );
+            if(type == 'section')
+              $(parent).after('<ul class="context_menu", id="context_menu"><li><a href="#">Добавить подраздел</a></li>' +
+                                                                          '<li><a href="#">Добавить элемент</a></li>' +
+                                                                          '<li><a href="#">Редактировать</a></li>' +
+                                                                          '<li><a href="#">Переместить</a></li>' +
+                                                                          '<li><a href="#">Удалить</a></li>' +
+                                                                          '</ul>');
+            if(type == 'element')
+              $(parent).after('<ul class="context_menu", id="context_menu"><li><a href="#">Редактировать</a></li>' +
+                                                                          '<li><a href="#">Переместить</a></li>' +
+                                                                          '<li><a href="#">Удалить</a></li>' +
+                                                                          '</ul>');
+            $(element).removeClass('hidden');
+            console.log("trial_page: ", "menu revealed")
+          }
+          else{
+            var contextMenu = document.getElementById("context_menu");
+            contextMenu.remove(); 
+            $(element).addClass('hidden');
+            console.log("trial_page: ", "menu unrevealed")
+          }
+        }
     </script>
 
   </body>
