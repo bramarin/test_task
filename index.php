@@ -58,7 +58,6 @@
             $sql = 'SELECT * FROM element';
             $result = mysqli_query($dbconn, $sql);
 
-            // Вывод результатов в HTML
             while ($line = mysqli_fetch_array($result)) {
                 $id_element = $line["id_element"];
           ?>
@@ -92,6 +91,8 @@
         });
 
         function showContextMenu(type, element){
+          hideAnyContextMenu();
+
           if($(element).hasClass("hidden")){
             var parent = $(element).parents( ".cont" );
             if(type == 'section')
@@ -113,11 +114,22 @@
             hideContextMenu(element);
           }
         }
+
         function hideContextMenu(element){
           var contextMenu = document.getElementById("context_menu");
-          contextMenu.remove(); 
-          $(element).addClass('hidden');
-          console.log("trial_page: ", "menu unrevealed")
+          if(contextMenu != null){
+            contextMenu.remove(); 
+            $(element).addClass('hidden');
+            console.log("trial_page: ", "menu unrevealed")
+          }
+        }
+        
+        function hideAnyContextMenu(){
+          var contextMenu = document.getElementById("context_menu");
+          if(contextMenu != null){
+            var parent = contextMenu.previousSibling; // .cont
+            hideContextMenu(parent.childNodes[0]);
+          }
         }
 
     </script>
@@ -129,12 +141,9 @@
             return;
           var $trigger = $(".context_menu_button");
           if($trigger !== event.target && !$trigger.has(event.target).length){
-              /*$(".context_menu").slideUp("fast");*/
-              var contextMenu = document.getElementById("context_menu");
-              var parent = contextMenu.previousSibling; // .cont
-              hideContextMenu(parent.childNodes[0]);
+              hideAnyContextMenu();
           } 
-          });
+        });
     </script>
 
   </body>
