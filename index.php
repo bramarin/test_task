@@ -1,4 +1,12 @@
 <!DOCTYPE html>
+
+<?php
+  $dbconn = mysqli_connect('localhost', '046203317_user', 'pye2n8S54AeCSN8', 'krasalp_test-task-db');
+  if (!$dbconn) {
+    die('Could not connect: ' . mysql_error());
+  }
+?> 
+
 <html lang="en">
 
   <head>
@@ -26,72 +34,50 @@
           <th class="th-sm">Тип</tr>
         </thead>
         <tbody>
+          <?php
+            $sql = 'SELECT * FROM section';
+            $result = mysqli_query($dbconn, $sql);
+
+            while ($line = mysqli_fetch_array($result)) {
+                $id_section = $line["id_section"];
+          ?>
           <tr class="section">
             <td class="cont"><button type="button" class="btn btn-teal btn-rounded btn-sm m-0 context_menu_button hidden" 
               id="context_menu_button" onclick="showContextMenu('section', this)">&#8278;</button></td>
-            <td class="section_name">name<span class="section_info">Здесь будет описание раздела</span></td>
-            <td>12-12-2021</td>
-            <td>12-12-2021</td>
-            <td>comment</td>
+            <td class="section_name"><? echo $line["name"];?><span class="section_info"><? echo $line["description"];?></span></td>
+            <td><? echo $line["creation_date"];?></td>
+            <td><? echo $line["modification_date"];?></td>
+            <td></td>
           </tr>
+          <?php
+            }
+            mysqli_free_result($result);
+          ?>
+
+          <?php
+            $sql = 'SELECT * FROM element';
+            $result = mysqli_query($dbconn, $sql);
+
+            // Вывод результатов в HTML
+            while ($line = mysqli_fetch_array($result)) {
+                $id_element = $line["id_element"];
+          ?>
           <tr class="section">
-            <td class="cont"><button type="button" class="btn btn-teal btn-rounded btn-sm m-0 context_menu_button hidden" 
-              id="context_menu_button" onclick="showContextMenu('section', this)">&#8278;</button></td>
-            <td class="section_name">name<span class="section_info">Здесь будет описание раздела</span></td>
-            <td>12-12-2021</td>
-            <td>12-12-2021</td>
-            <td>comment</td>
-          </tr>
-          <tr class="section">
-            <td class="cont"><button type="button" class="btn btn-teal btn-rounded btn-sm m-0 context_menu_button hidden" 
-              id="context_menu_button" onclick="showContextMenu('section', this)">&#8278;</button></td>
-            <td class="section_name">name<span class="section_info">Здесь будет описание раздела</span></td>
-            <td>12-12-2021</td>
-            <td>12-12-2021</td>
-            <td>article</td>
-          </tr>
           <tr class="element">
             <td class="cont"><button type="button" class="btn btn-teal btn-rounded btn-sm m-0 context_menu_button hidden" 
               id="context_menu_button" onclick="showContextMenu('element', this)">&#8278;</button></td>
-            <td class="element_name">name</td>
-            <td>12-12-2021</td>
-            <td>12-12-2021</td>
-            <td>comment</td>
+            <td class="section_name"><? echo $line["name"];?></td>
+            <td><? echo $line["creation_date"];?></td>
+            <td><? echo $line["modification_date"];?></td>
+            <td><? echo $line["type"];?></td>
           </tr>
-          <tr class="element">
-            <td class="cont"><button type="button" class="btn btn-teal btn-rounded btn-sm m-0 context_menu_button hidden" 
-              id="context_menu_button" onclick="showContextMenu('element', this)">&#8278;</button></td>
-            <td class="element_name">name</td>
-            <td>12-12-2021</td>
-            <td>12-12-2021</td>
-            <td>reply</td>
-          </tr>
-          <tr class="element">
-            <td class="cont"><button type="button" class="btn btn-teal btn-rounded btn-sm m-0 context_menu_button hidden" 
-              id="context_menu_button" onclick="showContextMenu('element', this)">&#8278;</button></td>
-            <td class="element_name">name</td>
-            <td>12-12-2021</td>
-            <td>12-12-2021</td>
-            <td>comment</td>
-          </tr>
-          <tr class="element">
-            <td class="cont"><button type="button" class="btn btn-teal btn-rounded btn-sm m-0 context_menu_button hidden" 
-              id="context_menu_button" onclick="showContextMenu('element', this)">&#8278;</button></td>
-            <td class="element_name">name</td>
-            <td>12-12-2021</td>
-            <td>12-12-2021</td>
-            <td>comment</td>
-          </tr>
-          <tr class="element">
-            <td class="cont"><button type="button" class="btn btn-teal btn-rounded btn-sm m-0 context_menu_button hidden" 
-              id="context_menu_button" onclick="showContextMenu('element', this)">&#8278;</button></td>
-            <td class="element_name">name</td>
-            <td>12-12-2021</td>
-            <td>12-12-2021</td>
-            <td>comment</td>
-          </tr>
+          <?php
+            }
+            mysqli_free_result($result);
+            mysqli_close($dbconn);
+          ?>
       </table>
-      
+
     </div>
 
     <!-- Bootstrap core JavaScript -->
