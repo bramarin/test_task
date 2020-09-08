@@ -91,7 +91,10 @@
         });
 
         function showContextMenu(type, element){
-          hideAnyContextMenu();
+
+          var wasThisMenuOpen = hideAnyContextMenu(element);
+          if(wasThisMenuOpen)
+            return;
 
           if($(element).hasClass("hidden")){
             var parent = $(element).parents( ".cont" );
@@ -124,12 +127,15 @@
           }
         }
         
-        function hideAnyContextMenu(){
+        function hideAnyContextMenu(clickedElement){
           var contextMenu = document.getElementById("context_menu");
           if(contextMenu != null){
             var parent = contextMenu.previousSibling; // .cont
             hideContextMenu(parent.childNodes[0]);
+            if(clickedElement === parent.childNodes[0])
+              return true;
           }
+          return false;
         }
 
     </script>
@@ -141,7 +147,7 @@
             return;
           var $trigger = $(".context_menu_button");
           if($trigger !== event.target && !$trigger.has(event.target).length){
-              hideAnyContextMenu();
+              hideAnyContextMenu(0);
           } 
         });
     </script>
