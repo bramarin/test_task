@@ -1,0 +1,38 @@
+body {
+    padding-top: 60px;
+    background-color: transparent !important;
+    text-align: -webkit-center;
+}
+
+.container{
+    display: block;
+}
+
+#login-form > * {
+    margin: 15px 0;
+}
+
+#form-header{
+	color: #1a1a1a;
+    font-size: 130%;
+    margin-bottom: 10px;
+}
+
+.form-button{
+	background-color: #535353;
+	outline: none;
+	color: #fff;
+	font-size: 85%;
+    width: 40%;
+    padding: 10px 0;
+	text-transform: uppercase;
+	border-color: #535353;
+
+}
+.form-button:hover,
+.form-button:focus,
+.form-button:hover,
+.form-button:hover {
+    background-color: #303030;
+	border-color: #303030;
+}
