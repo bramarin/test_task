@@ -200,7 +200,7 @@
               $(document.getElementById("thead")).after( this.responseText );
             }
           };
-          xhttp.open("GET", "getTable.php?q=" + parent_id, true);
+          xhttp.open("GET", "get-table.php?q=" + parent_id, true);
           xhttp.send();
         }
 
