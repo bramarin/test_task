@@ -24,57 +24,16 @@
     </div>
 
     <!-- Table -->
-    <div class="table-responsive-sm">
-      <table id="dtBasicExample" class="table table-borderless table-sm table-hover" cellspacing="0" width="100%">
-        <thead>
+    <div class="table-responsive-sm table_container">
+      <table id="table" class="table table-borderless table-sm table-hover" cellspacing="0" width="100%">
+        <thead id="thead">
           <th class="th-sm"></th>
-          <th class="th-sm">Наименование</th>
-          <th class="th-sm">Дата создания</th>
+          <th class="th-sm"><a href="#" onclick="sortEntries('creation_date')">Наименование</a></th>
+          <th class="th-sm"><a href="#" onclick="sortEntries('creation_date')">Дата создания</a></th>
           <th class="th-sm">Дата модификации</th>
           <th class="th-sm">Тип</tr>
         </thead>
-        <tbody>
-          <?php
-            $sql = 'SELECT * FROM section';
-            $result = mysqli_query($dbconn, $sql);
-
-            while ($line = mysqli_fetch_array($result)) {
-                $id_section = $line["id_section"];
-          ?>
-          <tr class="section">
-            <td class="cont"><button type="button" class="btn btn-teal btn-rounded btn-sm m-0 context_menu_button hidden" 
-              id="context_menu_button" onclick="showContextMenu('section', this)">&#8278;</button></td>
-            <td class="section_name"><? echo $line["name"];?><span class="section_info"><? echo $line["description"];?></span></td>
-            <td><? echo $line["creation_date"];?></td>
-            <td><? echo $line["modification_date"];?></td>
-            <td></td>
-          </tr>
-          <?php
-            }
-            mysqli_free_result($result);
-          ?>
-
-          <?php
-            $sql = 'SELECT * FROM element';
-            $result = mysqli_query($dbconn, $sql);
-
-            while ($line = mysqli_fetch_array($result)) {
-                $id_element = $line["id_element"];
-          ?>
-          <tr class="section">
-          <tr class="element">
-            <td class="cont"><button type="button" class="btn btn-teal btn-rounded btn-sm m-0 context_menu_button hidden" 
-              id="context_menu_button" onclick="showContextMenu('element', this)">&#8278;</button></td>
-            <td class="section_name"><? echo $line["name"];?></td>
-            <td><? echo $line["creation_date"];?></td>
-            <td><? echo $line["modification_date"];?></td>
-            <td><? echo $line["type"];?></td>
-          </tr>
-          <?php
-            }
-            mysqli_free_result($result);
-            mysqli_close($dbconn);
-          ?>
+        <!-- Here must be getTable.php-generated <tbody></tbody> -->
       </table>
 
     </div>
@@ -87,7 +46,7 @@
     <script>
         $(".level").on("click", function (e) {
             var $button = $(this);
-            console.log("trial_page: ", "level_link is pressed")
+            console.log("trial_page: ", "level_link is clicked")
         });
 
         function showContextMenu(type, element){
@@ -126,7 +85,7 @@
             console.log("trial_page: ", "menu unrevealed")
           }
         }
-        
+
         function hideAnyContextMenu(clickedElement){
           var contextMenu = document.getElementById("context_menu");
           if(contextMenu != null){
@@ -136,6 +95,58 @@
               return true;
           }
           return false;
+        }
+
+        $(document).ready(function(){
+          console.log("trial_page: ", "document ready");
+          const homeSectionId = 1;
+          displayTable(homeSectionId);
+        });
+
+
+        /*$(".section").on("click", function (e) {
+          if (!e.target.classList.contains("context_menu_button") && !(e.target.parentNode.parentNode.className == "context_menu")) {
+            var element = $(this);
+            var sectionID = element.id;
+            console.log("trial_page: ", "row element with id(" + elementID + ")is clicked");
+          }
+        });*/
+            
+        $(document).on('click','.section', function(e){
+          if (!e.target.classList.contains("context_menu_button") && !(e.target.parentNode.parentNode.className == "context_menu")) {
+            var element = $(this);
+            var sectionID = element.id;
+            console.log("trial_page: ", "section is clicked");
+          }
+        });
+
+        $(document).on('click','.element', function(e){
+          if (!e.target.classList.contains("context_menu_button") && !(e.target.parentNode.parentNode.className == "context_menu")) {
+            var element = $(this);
+            var sectionID = element.id;
+            console.log("trial_page: ", "element is clicked");
+          }
+        });
+
+            
+        // param: parent node, sort options
+        function displayTable(parent_id) {
+          delElementByTagName("TBODY");
+
+          var xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+              $(document.getElementById("thead")).after( this.responseText );
+            }
+          };
+          xhttp.open("GET", "getTable.php?q=" + parent_id, true);
+          xhttp.send();
+        }
+
+        function delElementByTagName(tag){
+          var element = document.getElementsByTagName(tag)[0];
+          if(element)
+            element.remove(); 
         }
 
     </script>
