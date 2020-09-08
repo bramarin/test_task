@@ -12,25 +12,6 @@
 
   <body>
 
-    <!-- Modal --><!--
-    <div class="modal fade" id="modal_box" tabindex="-1" role="dialog" aria-labelledby="modal_box_title" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="modal_box_long_title">Добавить раздел</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body" id="included_content"></div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Добавить</button>
-          </div>
-        </div>
-      </div>
-    </div>*/
-    -->
-
     <!-- Modal -->
     <div class="modal fade" id="modal_box" tabindex="-1" role="dialog" aria-labelledby="modal_box_label" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -54,7 +35,7 @@
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" onClick="addSection()" data-dismiss="modal">Добавить</button>
+            <button type="button" class="btn btn-secondary" onClick="addSection()" data-extra="" data-dismiss="modal">Добавить</button>
           </div>
         </div>
       </div>
@@ -63,13 +44,6 @@
 
     <!-- Path string -->
     <div id="path_line"><a id="sec1" class="level" href="#">home</a></div>
-
-    <!--
-    <div class="container overlay-container" id="add-section" align="middle" style="display: none;" onclick="addFormHideFunction(this)" scrolling="no">
-      <iframe src="add-section.html" width="450px"  allowtransparency frameborder="0" frameborder="0" scrolling="no" onload="resizeIframe(this)">
-      </iframe>
-    </div>
-    -->
 
     <!-- Table -->
     <div class="table-responsive-sm table_container">
@@ -93,20 +67,15 @@
     
     <script>
 
-        $(function(){
-              $("#includedContent").load("add-section.html"); 
-        });
-
         $('#modal_box').on('show.bs.modal', function (event) {
           var button = $(event.relatedTarget) // Button that triggered the modal
-          var recipient = button.data('whatever') 
+          var recipient = button.data('label')
           var modal = $(this)
           modal.find('.modal-title').text('' + recipient)
-          $("#includedContent").load("add-section.html")
         })
 
         function addSection(){
-          var id_parent =  4;
+          var id_parent =  $idClickedSecton; // $idClickedSecton - global var
           var name = '\'' + document.getElementById("modal-name").value + '\'';
           var description = '\'' + document.getElementById("modal-description").value + '\'';
 
@@ -127,10 +96,6 @@
           }); 
         }
 
-
-
-
-
         $(document).on('click','.level', function(e){
             console.log("trial_page: ", "level_link is clicked");
             
@@ -142,7 +107,10 @@
             $('#'+elementId).nextAll().remove();
         });
 
-        function showContextMenu(type, element){
+
+        $idClickedSecton = null;
+        function showContextMenu(type, idOfDbEntry, element){
+          $idClickedSecton=idOfDbEntry;
 
           var wasThisMenuOpen = hideAnyContextMenu(element);
           if(wasThisMenuOpen)
@@ -151,8 +119,8 @@
           if($(element).hasClass("hidden")){
             var parent = $(element).parents( ".cont" );
             if(type == 'section')
-              $(parent).after('<ul class="context_menu", id="context_menu"><li><a href="#" data-toggle="modal" data-target="#modal_box" data-whatever="Добавить подраздел">Добавить подраздел</a></li>' +
-                                                                          '<li><a href="#" data-toggle="modal" data-target="#modal_box"data-whatever="Добавить элемент">Добавить элемент</a></li>' +
+              $(parent).after('<ul class="context_menu", id="context_menu"><li><a href="#" data-toggle="modal" data-target="#modal_box" data-label="Добавить подраздел">Добавить подраздел</a></li>' +
+                                                                          '<li><a href="#" data-toggle="modal" data-target="#modal_box" data-label="Добавить элемент">Добавить элемент</a></li>' +
                                                                           '<li><a href="#">Редактировать</a></li>' +
                                                                           '<li><a href="#">Переместить</a></li>' +
                                                                           '<li><a href="#">Удалить</a></li>' +
@@ -196,14 +164,6 @@
           displayTable(homeSectionId);
         });
 
-
-        /*$(".section").on("click", function (e) {
-          if (!e.target.classList.contains("context_menu_button") && !(e.target.parentNode.parentNode.className == "context_menu")) {
-            var element = $(this);
-            var sectionID = element.id;
-            console.log("trial_page: ", "row element with id(" + elementID + ")is clicked");
-          }
-        });*/
             
         $(document).on('click','.section', function(e){
           console.log("trial_page: ", "section is clicked");

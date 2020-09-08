@@ -17,7 +17,7 @@
         echo  '
         <tr id="sec' .  $line["id_section"] . '" class="clickable-row section">
             <td class="cont"><button type="button" class="btn btn-teal btn-rounded btn-sm m-0 context_menu_button hidden" 
-                id="context_menu_button" onclick="showContextMenu(\'section\', this)">&#8278;</button></td>
+                id="context_menu_button" onclick="showContextMenu(\'section\',' .  $line["id_section"] . ', this)">&#8278;</button></td>
             <td class="section_name"><div class="name">' . $line["name"] . '</div><span class="section_info">' . $line["description"] . '</span></td>
             <td>' .  $line["creation_date"] . '</td>
             <td>' .  $line["modification_date"] . '</td>
@@ -34,7 +34,7 @@
         echo '
         <tr id="el' .  $line["id_element"] . '" class="clickable-row element">
             <td class="cont"><button type="button" class="btn btn-teal btn-rounded btn-sm m-0 context_menu_button hidden" 
-                id="context_menu_button" onclick="showContextMenu(\'element\', this)">&#8278;</button></td>
+                id="context_menu_button" onclick="showContextMenu(\'element\', 0, this)">&#8278;</button></td>
             <td class="section_name">' .  $line["name"] . '</td>
             <td>' .  $line["creation_date"] . '</td>
             <td>' .  $line["modification_date"] . '</td>
