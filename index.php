@@ -32,6 +32,19 @@
                 <label for="modal-description" class="col-form-label">Описание:</label>
                 <textarea class="form-control" id="modal-description"></textarea>
               </div>
+              <div id="modal-type-group" class="form-group" style="display: none;">
+                <div class="btn-group col-md-12"  style="padding: 0;">
+                  <button type="button" class="btn btn-light dropdown-toggle col-md-12" data-toggle="dropdown">
+                    Тип элемента
+                  </button>
+                  <div class="dropdown-menu col-md-12"  style="padding: 0; text-align: center;">
+                    <a class="dropdown-item" href="#">Отзыв</a>
+                    <a class="dropdown-item" href="#">Комментарий</a>
+                    <a class="dropdown-item" href="#">Новость</a>
+                    <a class="dropdown-item" href="#">Статья</a>
+                  </div>
+                </div>  
+              </div>
             </form>
           </div>
           <div class="modal-footer">
@@ -66,12 +79,25 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
     
     <script>
+      $(function(){
+        $(".dropdown-menu a").click(function(){
+          $(".dropdown-toggle:first-child").text($(this).text());
+          $(".dropdown-toggle:first-child").val($(this).text());
+        });
+      });
 
         $('#modal_box').on('show.bs.modal', function (event) {
           var button = $(event.relatedTarget) // Button that triggered the modal
           var recipient = button.data('label')
           var modal = $(this)
           modal.find('.modal-title').text('' + recipient)
+          // show
+          if(recipient == 'Добавить элемент'){
+            document.getElementById("modal-type-group").style.display = "block";
+          }
+          else if(recipient == 'Добавить подраздел'){
+            document.getElementById("modal-type-group").style.display = "none";
+          }
         })
 
         function addSection(){
