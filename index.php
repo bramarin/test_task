@@ -12,7 +12,7 @@
 
   <body>
     <!-- Path string -->
-    <div id="path_line"><a class="level" href="#">home</a></div>
+    <div id="path_line"><a id="sec1" class="level" href="#">home</a></div>
 
     <!-- Table -->
     <div class="table-responsive-sm table_container">
@@ -35,9 +35,16 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
     
     <script>
-        $(".level").on("click", function (e) {
-            var $button = $(this);
-            console.log("trial_page: ", "level_link is clicked")
+
+        $(document).on('click','.level', function(e){
+            console.log("trial_page: ", "level_link is clicked");
+            
+            var elements = $(this);
+            var elementId = elements[0].id;
+            var sectionID = elementId.replace(/\D/g, ""); // get first and only id of this .section, then replase non digit symbols with empty str
+            displayTable(sectionID);
+
+            $('#'+elementId).nextAll().remove();
         });
 
         function showContextMenu(type, element){
@@ -110,12 +117,12 @@
             var elementId = elements[0].id;
             var sectionID = elementId.replace(/\D/g, ""); // get first and only id of this .section, then replase non digit symbols with empty str
             displayTable(sectionID);
+
             //add path line
             var sectionName = elements[0].getElementsByClassName("name")[0].innerHTML;
-            var pathElement = '\\<a id="' + elementId + '" class="level" href="#">' + sectionName + '</a>';
+            var pathElement = '<a id="' + elementId + '" class="level" href="#">' + '\\' + sectionName + '</a>';
             var pathLineDock = document.getElementById("path_line");
             $(pathLineDock.lastChild).after(pathElement);
-
           }
         });
 
@@ -157,7 +164,7 @@
             return;
           var $trigger = $(".context_menu_button");
           if($trigger !== event.target && !$trigger.has(event.target).length){
-              hideAnyContextMenu();
+              hideAnyContextMenu(0);
           } 
         });
     </script>
