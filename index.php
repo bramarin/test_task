@@ -113,10 +113,11 @@
         });*/
             
         $(document).on('click','.section', function(e){
+          console.log("trial_page: ", "section is clicked");
           if (!e.target.classList.contains("context_menu_button") && !(e.target.parentNode.parentNode.className == "context_menu")) {
-            var element = $(this);
-            var sectionID = element.id;
-            console.log("trial_page: ", "section is clicked");
+            var elements = $(this);
+            var sectionID = elements[0].id.replace(/\D/g, ""); // get first and only id of this .section, then replase non digit symbols with empty str
+            displayTable(sectionID);
           }
         });
 
