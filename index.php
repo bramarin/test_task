@@ -11,15 +11,72 @@
   </head>
 
   <body>
+
+    <!-- Modal --><!--
+    <div class="modal fade" id="modal_box" tabindex="-1" role="dialog" aria-labelledby="modal_box_title" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modal_box_long_title">Добавить раздел</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" id="included_content"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Добавить</button>
+          </div>
+        </div>
+      </div>
+    </div>*/
+    -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="modal_box" tabindex="-1" role="dialog" aria-labelledby="modal_box_label" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modal_box_label">New message</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="modal-name" class="col-form-label">Название:</label>
+                <input type="text" class="form-control" id="modal-name">
+              </div>
+              <div class="form-group">
+                <label for="modal-description" class="col-form-label">Описание:</label>
+                <textarea class="form-control" id="modal-description"></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onClick="addSection()" data-dismiss="modal">Добавить</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal -->
+
     <!-- Path string -->
     <div id="path_line"><a id="sec1" class="level" href="#">home</a></div>
+
+    <!--
+    <div class="container overlay-container" id="add-section" align="middle" style="display: none;" onclick="addFormHideFunction(this)" scrolling="no">
+      <iframe src="add-section.html" width="450px"  allowtransparency frameborder="0" frameborder="0" scrolling="no" onload="resizeIframe(this)">
+      </iframe>
+    </div>
+    -->
 
     <!-- Table -->
     <div class="table-responsive-sm table_container">
       <table id="table" class="table table-borderless table-sm table-hover" cellspacing="0" width="100%">
         <thead id="thead">
           <th class="th-sm"></th>
-          <th class="th-sm"><a href="#" onclick="sortEntries('creation_date')">Наименование</a></th>
+          <th class="th-sm"><a href="#" onclick="addFormShowFunction()">Наименование</a></th>
           <th class="th-sm"><a href="#" onclick="sortEntries('creation_date')">Дата создания</a></th>
           <th class="th-sm">Дата модификации</th>
           <th class="th-sm">Тип</tr>
@@ -35,6 +92,44 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
     
     <script>
+
+        $(function(){
+              $("#includedContent").load("add-section.html"); 
+        });
+
+        $('#modal_box').on('show.bs.modal', function (event) {
+          var button = $(event.relatedTarget) // Button that triggered the modal
+          var recipient = button.data('whatever') 
+          var modal = $(this)
+          modal.find('.modal-title').text('' + recipient)
+          $("#includedContent").load("add-section.html")
+        })
+
+        function addSection(){
+          var id_parent =  4;
+          var name = '\'' + document.getElementById("modal-name").value + '\'';
+          var description = '\'' + document.getElementById("modal-description").value + '\'';
+
+          $.ajax({
+            url: "add-new-section.php",
+            type: "get",
+            data: { 
+              id_parent: id_parent,
+              name: name,
+              description: description
+            },
+            success: function(data) {
+                console.log("trial_page: ", "succes");
+            },
+            error: function(xhr) {
+                console.log("trial_page: ", xhr);
+            }
+          }); 
+        }
+
+
+
+
 
         $(document).on('click','.level', function(e){
             console.log("trial_page: ", "level_link is clicked");
@@ -56,8 +151,8 @@
           if($(element).hasClass("hidden")){
             var parent = $(element).parents( ".cont" );
             if(type == 'section')
-              $(parent).after('<ul class="context_menu", id="context_menu"><li><a href="#">Добавить подраздел</a></li>' +
-                                                                          '<li><a href="#">Добавить элемент</a></li>' +
+              $(parent).after('<ul class="context_menu", id="context_menu"><li><a href="#" data-toggle="modal" data-target="#modal_box" data-whatever="Добавить подраздел">Добавить подраздел</a></li>' +
+                                                                          '<li><a href="#" data-toggle="modal" data-target="#modal_box"data-whatever="Добавить элемент">Добавить элемент</a></li>' +
                                                                           '<li><a href="#">Редактировать</a></li>' +
                                                                           '<li><a href="#">Переместить</a></li>' +
                                                                           '<li><a href="#">Удалить</a></li>' +

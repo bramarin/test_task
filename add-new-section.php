@@ -1,7 +1,7 @@
 <?php
   $dbconn = mysqli_connect('localhost', '046203317_user', 'pye2n8S54AeCSN8', 'krasalp_test-task-db');
   if (!$dbconn) {
-      die('Could not connect: ' . mysql_error());
+      die('Could not connect: ' . mysqli_error());
   }
 
   $id_parent = $_GET["id_parent"];
@@ -12,7 +12,7 @@
                         VALUES ($id_parent, $name, $description, NOW(), NOW());";
   echo($query);
 
-  $result = mysqli_query($query) or die('Ошибка запроса: ' . mysqli_last_error());
+  $result = mysqli_query($dbconn, $query) or die('Ошибка запроса: ' . mysqli_error());
 
   // Очистка результата
   mysqli_free_result($result);
