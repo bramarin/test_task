@@ -1,12 +1,5 @@
 <!DOCTYPE html>
 
-<?php
-  $dbconn = mysqli_connect('localhost', '046203317_user', 'pye2n8S54AeCSN8', 'krasalp_test-task-db');
-  if (!$dbconn) {
-    die('Could not connect: ' . mysql_error());
-  }
-?> 
-
 <html lang="en">
 
   <head>
@@ -19,9 +12,7 @@
 
   <body>
     <!-- Path string -->
-    <div class="path">
-      <a class="level" href="#">level_one</a>\<a class="level" href="#">level_two</a>\<a class="level" href="#">level_three</a>
-    </div>
+    <div id="path_line"><a class="level" href="#">home</a></div>
 
     <!-- Table -->
     <div class="table-responsive-sm table_container">
@@ -116,15 +107,22 @@
           console.log("trial_page: ", "section is clicked");
           if (!e.target.classList.contains("context_menu_button") && !(e.target.parentNode.parentNode.className == "context_menu")) {
             var elements = $(this);
-            var sectionID = elements[0].id.replace(/\D/g, ""); // get first and only id of this .section, then replase non digit symbols with empty str
+            var elementId = elements[0].id;
+            var sectionID = elementId.replace(/\D/g, ""); // get first and only id of this .section, then replase non digit symbols with empty str
             displayTable(sectionID);
+            //add path line
+            var sectionName = elements[0].getElementsByClassName("name")[0].innerHTML;
+            var pathElement = '\\<a id="' + elementId + '" class="level" href="#">' + sectionName + '</a>';
+            var pathLineDock = document.getElementById("path_line");
+            $(pathLineDock.lastChild).after(pathElement);
+
           }
         });
 
         $(document).on('click','.element', function(e){
           if (!e.target.classList.contains("context_menu_button") && !(e.target.parentNode.parentNode.className == "context_menu")) {
-            var element = $(this);
-            var sectionID = element.id;
+            var elements = $(this);
+            var sectionID = elements[0].id;
             console.log("trial_page: ", "element is clicked");
           }
         });
@@ -159,7 +157,7 @@
             return;
           var $trigger = $(".context_menu_button");
           if($trigger !== event.target && !$trigger.has(event.target).length){
-              hideAnyContextMenu(0);
+              hideAnyContextMenu();
           } 
         });
     </script>
