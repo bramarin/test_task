@@ -45,7 +45,6 @@ body {
 .form-pol-button .form-control,
 .form-pol-button .form-control:focus,
 .form-pol-button .form-control:hover{
-  background-image:  none;
   outline: none;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
@@ -53,14 +52,20 @@ body {
   border: 1px solid #ddd;
   font-size: 16px;
   height: 45px !important;
+  color: #1a1a1a;
+}
+.pol > * {
+    padding: 0%;
 }
 
-.pol{
-  margin: 10px 0 14px 0;
+.dropdown-list{
+    color: #1a1a1a;
 }
+
 .pol p{
   font-size: 16px;
   padding-top: 11px;
+  padding-left: 15px;
   text-align: left;
   color: rgba(119, 119, 119, 0.76);
 }

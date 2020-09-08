@@ -11,35 +11,33 @@
 
 	<body>
 		<div class="container">
-            <div class="col-md-6">
-                <div class="panel panel-login">
-                    <a id="form-header">Добавить элемент</a>
-                    <form id="login-form" action="" method="post" role="form" style="display: block;" data-toggle="validator" data-disable="false" data-delay="50">
-                        <input type="text" name="itemName" id="itemName" tabindex="1" class="form-control" placeholder="*Название" value="" required>
-                        <textarea name="description" id="description" tabindex="2" class="form-control" rows="5" placeholder="Описание"></textarea>
+			<div class="panel panel-login">
+				<a id="form-header">Добавить элемент</a>
+				<form id="login-form" action="" method="post" role="form" style="display: block;" data-toggle="validator" data-disable="false" data-delay="50">
+					<input type="text" name="itemName" id="itemName" tabindex="1" class="form-control" placeholder="*Название" value="" required>
+					<textarea name="description" id="description" tabindex="2" class="form-control" rows="5" placeholder="Описание"></textarea>
 
-						<div class="row pol">
-							<div class="col-sm-4">
-							  <p>Тип элемента</p>
-							</div>
-							<div class="col-sm-6">
-							  <div class="form-pol-button">
-								<select class="form-control">
-								  <option value="news">новость</option>
-								  <option value="article">статья</option>
-								  <option value="reply">отзыв</option>
-								  <option value="comment">комментарий</option>
-								</select>
-							  </div>
+					<div class="row pol">
+						<div class="col-sm-3">
+							<p>Тип элемента:</p>
+						</div>
+						<div class="col-sm-9">
+							<div class="form-pol-button">
+							<select class="form-control ">
+								<option class="dropdown-list" value="news">новость</option>
+								<option class="dropdown-list" value="article">статья</option>
+								<option class="dropdown-list" value="reply">отзыв</option>
+								<option class="dropdown-list" value="comment">комментарий</option>
+							</select>
 							</div>
 						</div>
-	
-                        <input type="submit" name="add-submit" id="add-submit" tabindex="3" class="form-button form-control btn" value="Добавить">
-                            
-					</form>
-					
-                </div>
-            </div>
+					</div>
+
+					<input type="submit" name="add-submit" id="add-submit" tabindex="3" class="form-button form-control btn" value="Добавить">
+						
+				</form>
+				
+			</div>
 		</div>
 
 
