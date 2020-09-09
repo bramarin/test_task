@@ -48,7 +48,7 @@
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" onClick="addEntry()" data-dismiss="modal">Добавить</button>
+            <button type="button" class="btn btn-secondary" onClick="addEntry()" data-dismiss="modal">Подтвердить</button>
           </div>
         </div>
       </div>
@@ -98,6 +98,30 @@
         else if(recipient == 'Добавить подраздел'){
           document.getElementById("modal-type-group").style.display = "none";
         }
+        
+        if(recipient == 'Редактировать элемент'){
+          document.getElementById("modal-type-group").style.display = "block";
+          var name = $(document.getElementById("el"+$idClickedRow)).data('name');
+          var type = $(document.getElementById("el"+$idClickedRow)).data('type');
+          document.getElementById("modal-name").value = name;
+          document.getElementById("modal-type").value = name;
+          if(type == ""){
+
+          }
+          else{
+            $(".dropdown-toggle:first-child").text(type);
+            $(".dropdown-toggle:first-child").val(type);
+          }
+
+        }
+        else if(recipient == 'Редактировать раздел'){
+          document.getElementById("modal-type-group").style.display = "none";
+          var name = $(document.getElementById("sec"+$idClickedRow)).data('name');
+          var desc = $(document.getElementById("sec"+$idClickedRow)).data('description');
+          document.getElementById("modal-name").value = name;
+          document.getElementById("modal-description").value = desc;
+        }
+
       })
 
       function addEntry(){
@@ -217,13 +241,13 @@
           var parent = $(element).parents( ".cont" );
           if(type == 'section')
             $(parent).after('<ul class="context_menu", id="context_menu"><li><a href="#" data-toggle="modal" data-target="#modal_box" data-label="Добавить подраздел">Добавить подраздел</a></li>' +
-                                                                        '<li><a href="#" data-toggle="modal" data-target="#modal_box" data-label="Добавить элемент">Добавить элемент</a></li>' +
-                                                                        '<li><a href="#" onClick="updateSection()">Редактировать</a></li>' +
+                                                                        '<li><a href="#" data-toggle="modal" data-target="#modal_box" data-label="Добавить элемент" data-label="Добавить элемент">Добавить элемент</a></li>' +
+                                                                        '<li><a href="#" onClick="updateSection()" data-toggle="modal" data-target="#modal_box" data-label="Редактировать раздел">Редактировать</a></li>' +
                                                                         '<li><a href="#" onClick="relocateSection()">Переместить</a></li>' +
                                                                         '<li><a href="#" onClick="delSection()">Удалить</a></li>' +
                                                                         '</ul>');
           if(type == 'element')
-            $(parent).after('<ul class="context_menu", id="context_menu"><li><a href="#" onClick="updateElement()">Редактировать</a></li>' +
+            $(parent).after('<ul class="context_menu", id="context_menu"><li><a href="#" onClick="updateElement()" data-toggle="modal" data-target="#modal_box" data-label="Редактировать элемент">Редактировать</a></li>' +
                                                                         '<li><a href="#" onClick="relocateElement()">Переместить</a></li>' +
                                                                         '<li><a href="#" onClick="delElement()">Удалить</a></li>' +
                                                                         '</ul>');
@@ -261,7 +285,6 @@
         displayTable(homeSectionId);
       });
 
-          
       $(document).on('click','.section', function(e){
         console.log("trial_page: ", "section is clicked");
         if (!e.target.classList.contains("context_menu_button") && !(e.target.parentNode.parentNode.className == "context_menu")) {

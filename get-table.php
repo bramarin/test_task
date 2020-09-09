@@ -1,7 +1,7 @@
-<?php
-    $dbconn = mysqli_connect('localhost', '046203317_user', 'pye2n8S54AeCSN8', 'krasalp_test-task-db');
-    if (!$dbconn) {
-        die('Could not connect: ' . mysql_error());
+    <?php
+        $dbconn = mysqli_connect('localhost', '046203317_user', 'pye2n8S54AeCSN8', 'krasalp_test-task-db');
+        if (!$dbconn) {
+            die('Could not connect: ' . mysql_error());
     }
 
     $parent_id = $_GET['q'];
@@ -15,7 +15,7 @@
     while ($line = mysqli_fetch_array($result)) {
         $id_section = $line["id_section"];
         echo  '
-        <tr id="sec' .  $line["id_section"] . '" class="clickable-row section">
+        <tr id="sec' .  $line["id_section"] . '" class="clickable-row section" data-name="'.  $line["name"] .'" data-description="'.  $line["description"] .'">
             <td class="cont"><button type="button" class="btn btn-teal btn-rounded btn-sm m-0 context_menu_button hidden" 
                 id="context_menu_button" onclick="showContextMenu(\'section\',' .  $line["id_section"] . ', this)">&#8278;</button></td>
             <td class="section_name"><div class="name">' . $line["name"] . '</div><span class="section_info">' . $line["description"] . '</span></td>
@@ -32,7 +32,7 @@
     while ($line = mysqli_fetch_array($result)) {
         $id_element = $line["id_element"];
         echo '
-        <tr id="el' .  $line["id_element"] . '" class="clickable-row element">
+        <tr id="el' .  $line["id_element"] . '" class="clickable-row element" data-name="'.  $line["name"] .'" data-type="'.  $line["type"] .'">
             <td class="cont"><button type="button" class="btn btn-teal btn-rounded btn-sm m-0 context_menu_button hidden" 
                 id="context_menu_button" onclick="showContextMenu(\'element\', ' .  $line["id_element"] . ', this)">&#8278;</button></td>
             <td class="section_name">' .  $line["name"] . '</td>
