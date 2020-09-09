@@ -177,6 +177,19 @@
           displayTable($thisSecionId);
       };
 
+      function relocateElement(){
+        console.log("trial_page: ", "UNSUPPORTED FUNCTIONALITY: Relocate");
+      };
+      function relocateSection(){
+        console.log("trial_page: ", "UNSUPPORTED FUNCTIONALITY: Relocate");
+      };
+
+      function updateElement(){
+        console.log("trial_page: ", "UNSUPPORTED FUNCTIONALITY: Update");
+      };
+      function updateSection(){
+        console.log("trial_page: ", "UNSUPPORTED FUNCTIONALITY: Update");
+      };
 
       $thisSecionId = 0; // TODO replace it
       $(document).on('click','.level', function(e){
@@ -205,13 +218,13 @@
           if(type == 'section')
             $(parent).after('<ul class="context_menu", id="context_menu"><li><a href="#" data-toggle="modal" data-target="#modal_box" data-label="Добавить подраздел">Добавить подраздел</a></li>' +
                                                                         '<li><a href="#" data-toggle="modal" data-target="#modal_box" data-label="Добавить элемент">Добавить элемент</a></li>' +
-                                                                        '<li><a href="#">Редактировать</a></li>' +
-                                                                        '<li><a href="#">Переместить</a></li>' +
+                                                                        '<li><a href="#" onClick="updateSection()">Редактировать</a></li>' +
+                                                                        '<li><a href="#" onClick="relocateSection()">Переместить</a></li>' +
                                                                         '<li><a href="#" onClick="delSection()">Удалить</a></li>' +
                                                                         '</ul>');
           if(type == 'element')
-            $(parent).after('<ul class="context_menu", id="context_menu"><li><a href="#">Редактировать</a></li>' +
-                                                                        '<li><a href="#">Переместить</a></li>' +
+            $(parent).after('<ul class="context_menu", id="context_menu"><li><a href="#" onClick="updateElement()">Редактировать</a></li>' +
+                                                                        '<li><a href="#" onClick="relocateElement()">Переместить</a></li>' +
                                                                         '<li><a href="#" onClick="delElement()">Удалить</a></li>' +
                                                                         '</ul>');
           $(element).removeClass('hidden');
