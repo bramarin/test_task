@@ -48,7 +48,7 @@
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" onClick="addEntry()" data-dismiss="modal">Подтвердить</button>
+            <button id="submit_button" type="button" class="btn btn-secondary" data-dismiss="modal">Подтвердить</button>
           </div>
         </div>
       </div>
@@ -124,7 +124,16 @@
           document.getElementById("modal-description").value = desc;
         }
 
+        var action = button.data('action')
+        if (action == 'Редактировать')
+         //$(document.getElementById("submit_button")).addEventListener('click', updateEntry, false);
+         document.getElementById("submit_button").onclick = updateEntry;
+        else
+         //$(document.getElementById("submit_button")).addEventListener('click', addEntry, false);
+         document.getElementById("submit_button").onclick = addEntry;
+
       })
+
 
       function addEntry(){
         var id_parent =  $idClickedRow; // $idClickedRow - global var
@@ -210,12 +219,48 @@
         console.log("trial_page: ", "UNSUPPORTED FUNCTIONALITY: Relocate");
       };
 
-      function updateElement(){
-        console.log("trial_page: ", "UNSUPPORTED FUNCTIONALITY: Update");
-      };
-      function updateSection(){
-        console.log("trial_page: ", "UNSUPPORTED FUNCTIONALITY: Update");
-      };
+
+      function updateEntry(){
+        var id =  $idClickedRow; // $idClickedRow - global var
+        var name = '\'' + document.getElementById("modal-name").value + '\'';
+
+        if($(document.getElementById("modal_box_label"))[0].innerText == 'Редактировать раздел'){
+          var description = '\'' + document.getElementById("modal-description").value + '\'';
+          $.ajax({
+            url: "update-section.php",
+            type: "get",
+            data: { 
+              id_section: id,
+              name: name,
+              description: description
+            },
+            success: function(data) {
+                console.log("trial_page: ", "success: " + data);
+            },
+            error: function(xhr) {
+                console.log("trial_page: ", xhr);
+            }
+          });  
+        } else if($(document.getElementById("modal_box_label"))[0].innerText == 'Редактировать элемент'){
+          var type = '\'' + document.getElementById("modal-type").value + '\'';
+          $.ajax({
+          url: "update-element.php",
+            type: "get",
+            data: { 
+              id_element: id,
+              name: name,
+              type: type
+            },
+            success: function(data) {
+                console.log("trial_page: ", "success: " + data);
+            },
+            error: function(xhr) {
+                console.log("trial_page: ", xhr);
+            }
+          }); 
+        }
+        displayTable($thisSecionId);
+      }
 
       $(document).on('click','.level', function(e){
           console.log("trial_page: ", "level_link is clicked");
@@ -241,13 +286,13 @@
           var parent = $(element).parents( ".cont" );
           if(type == 'section')
             $(parent).after('<ul class="context_menu", id="context_menu"><li><a href="#" data-toggle="modal" data-target="#modal_box" data-label="Добавить подраздел">Добавить подраздел</a></li>' +
-                                                                        '<li><a href="#" data-toggle="modal" data-target="#modal_box" data-label="Добавить элемент" data-label="Добавить элемент">Добавить элемент</a></li>' +
-                                                                        '<li><a href="#" onClick="updateSection()" data-toggle="modal" data-target="#modal_box" data-label="Редактировать раздел">Редактировать</a></li>' +
+                                                                        '<li><a href="#" data-toggle="modal" data-target="#modal_box" data-label="Добавить элемент">Добавить элемент</a></li>' +
+                                                                        '<li><a href="#" data-toggle="modal" data-target="#modal_box" data-label="Редактировать раздел" data-action="Редактировать">Редактировать</a></li>' +
                                                                         '<li><a href="#" onClick="relocateSection()">Переместить</a></li>' +
                                                                         '<li><a href="#" onClick="delSection()">Удалить</a></li>' +
                                                                         '</ul>');
           if(type == 'element')
-            $(parent).after('<ul class="context_menu", id="context_menu"><li><a href="#" onClick="updateElement()" data-toggle="modal" data-target="#modal_box" data-label="Редактировать элемент">Редактировать</a></li>' +
+            $(parent).after('<ul class="context_menu", id="context_menu"><li><a href="#" data-toggle="modal" data-target="#modal_box" data-label="Редактировать элемент" data-action="Редактировать">Редактировать</a></li>' +
                                                                         '<li><a href="#" onClick="relocateElement()">Переместить</a></li>' +
                                                                         '<li><a href="#" onClick="delElement()">Удалить</a></li>' +
                                                                         '</ul>');
