@@ -28,7 +28,7 @@
                 <label for="modal-name" class="col-form-label">Название:</label>
                 <input type="text" class="form-control" id="modal-name">
               </div>
-              <div class="form-group">
+              <div id="modal-desc-group" class="form-group" style="display: none;">
                 <label for="modal-description" class="col-form-label">Описание:</label>
                 <textarea class="form-control" id="modal-description"></textarea>
               </div>
@@ -63,8 +63,8 @@
       <table id="table" class="table table-borderless table-sm table-hover" cellspacing="0" width="100%">
         <thead id="thead">
           <th class="th-sm"></th>
-          <th class="th-sm"><a href="#" onclick="addFormShowFunction()">Наименование</a></th>
-          <th class="th-sm"><a href="#" onclick="sortEntries('creation_date')">Дата создания</a></th>
+          <th class="th-sm">Наименование</th>
+          <th class="th-sm">Дата создания</th>
           <th class="th-sm">Дата модификации</th>
           <th class="th-sm">Тип</tr>
         </thead>
@@ -94,9 +94,11 @@
         // show
         if(recipient == 'Добавить элемент'){
           document.getElementById("modal-type-group").style.display = "block";
+          document.getElementById("modal-desc-group").style.display = "none";
         }
         else if(recipient == 'Добавить подраздел'){
           document.getElementById("modal-type-group").style.display = "none";
+          document.getElementById("modal-desc-group").style.display = "block";
         }
         
         if(recipient == 'Редактировать элемент'){
@@ -215,14 +217,12 @@
         console.log("trial_page: ", "UNSUPPORTED FUNCTIONALITY: Update");
       };
 
-      $thisSecionId = 0; // TODO replace it
       $(document).on('click','.level', function(e){
           console.log("trial_page: ", "level_link is clicked");
           
           var elements = $(this);
           var elementId = elements[0].id;
           var sectionID = elementId.replace(/\D/g, ""); // get first and only id of this .section, then replase non digit symbols with empty str
-          $thisSecionId = sectionID;
           displayTable(sectionID);
 
           $('#'+elementId).nextAll().remove();
@@ -309,7 +309,8 @@
         }
       });
 
-        
+
+      $thisSecionId = 0; // TODO replace it 
       // param: parent node, sort options
       function displayTable(parent_id) {
         delElementByTagName("TBODY");
@@ -322,6 +323,8 @@
         };
         xhttp.open("GET", "get-table.php?q=" + parent_id, true);
         xhttp.send();
+
+        $thisSecionId = parent_id;
       }
 
       function delElementByTagName(tag){
