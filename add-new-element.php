@@ -12,7 +12,7 @@
                         VALUES ($id_parent, $name, $type, NOW(), NOW());";
   echo($query);
 
-  $result = mysqli_query($query) or die('Ошибка запроса: ' . mysqli_last_error());
+  $result = mysqli_query($dbconn, $query) or die('Ошибка запроса: ' . mysqli_error());
 
   // Очистка результата
   mysqli_free_result($result);

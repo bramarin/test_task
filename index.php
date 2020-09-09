@@ -17,7 +17,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="modal_box_label">New message</h5>
+            <h5 class="modal-title" id="modal_box_label">Заголовок</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -34,7 +34,7 @@
               </div>
               <div id="modal-type-group" class="form-group" style="display: none;">
                 <div class="btn-group col-md-12"  style="padding: 0;">
-                  <button type="button" class="btn btn-light dropdown-toggle col-md-12" data-toggle="dropdown">
+                  <button id="modal-type" type="button" class="btn btn-light dropdown-toggle col-md-12" data-toggle="dropdown">
                     Тип элемента
                   </button>
                   <div class="dropdown-menu col-md-12"  style="padding: 0; text-align: center;">
@@ -48,7 +48,7 @@
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" onClick="addSection()" data-extra="" data-dismiss="modal">Добавить</button>
+            <button type="button" class="btn btn-secondary" onClick="addEntry()" data-dismiss="modal">Добавить</button>
           </div>
         </div>
       </div>
@@ -100,26 +100,49 @@
           }
         })
 
-        function addSection(){
+        function addEntry(){
           var id_parent =  $idClickedSecton; // $idClickedSecton - global var
           var name = '\'' + document.getElementById("modal-name").value + '\'';
-          var description = '\'' + document.getElementById("modal-description").value + '\'';
 
-          $.ajax({
-            url: "add-new-section.php",
-            type: "get",
-            data: { 
-              id_parent: id_parent,
-              name: name,
-              description: description
-            },
-            success: function(data) {
-                console.log("trial_page: ", "succes");
-            },
-            error: function(xhr) {
-                console.log("trial_page: ", xhr);
-            }
-          }); 
+          if($(document.getElementById("modal_box_label"))[0].innerText == 'Добавить подраздел'){
+            var description = '\'' + document.getElementById("modal-description").value + '\'';
+            $.ajax({
+              url: "add-new-section.php",
+              type: "get",
+              data: { 
+                id_parent: id_parent,
+                name: name,
+                description: description
+              },
+              success: function(data) {
+                  console.log("trial_page: ", "success");
+              },
+              error: function(xhr) {
+                  console.log("trial_page: ", xhr);
+              }
+            }); 
+          } else if($(document.getElementById("modal_box_label"))[0].innerText == 'Добавить элемент'){
+            var type = '\'' + document.getElementById("modal-type").value + '\'';
+            $.ajax({
+              url: "add-new-element.php",
+              type: "get",
+              data: { 
+                id_parent: id_parent,
+                name: name,
+                type: type
+              },
+              success: function(data) {
+                  console.log("trial_page: ", "success");
+              },
+              error: function(xhr) {
+                  console.log("trial_page: ", xhr);
+              }
+            }); 
+          }
+
+          
+
+
         }
 
         $(document).on('click','.level', function(e){
