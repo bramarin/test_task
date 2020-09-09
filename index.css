@@ -1,6 +1,18 @@
+body{
+    padding: 10px 20px;
+}
+
 .table-borderless td,
 .table-borderless th {
     border: 0;
+    vertical-align: middle; 
+}
+
+.level{
+    color: rgb(99, 71, 110);
+}
+#path_line{
+    margin-bottom: 10px;
 }
 
 .context_menu_button {

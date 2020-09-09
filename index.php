@@ -62,11 +62,11 @@
     <div class="table-responsive-sm table_container">
       <table id="table" class="table table-borderless table-sm table-hover" cellspacing="0" width="100%">
         <thead id="thead">
-          <th class="th-sm"></th>
-          <th class="th-sm">Наименование</th>
-          <th class="th-sm">Дата создания</th>
-          <th class="th-sm">Дата модификации</th>
-          <th class="th-sm">Тип</tr>
+          <th class="th-sm" style="width: 5%"></th>
+          <th class="th-sm" style="width: 50%">Наименование</th>
+          <th class="th-sm" style="width: 15%">Дата создания</th>
+          <th class="th-sm" style="width: 15%">Дата модификации</th>
+          <th class="th-sm" style="width: 15%">Тип</tr>
         </thead>
         <!-- Here must be getTable.php-generated <tbody></tbody> -->
       </table>
@@ -103,6 +103,7 @@
         
         if(recipient == 'Редактировать элемент'){
           document.getElementById("modal-type-group").style.display = "block";
+          document.getElementById("modal-desc-group").style.display = "none";
           var name = $(document.getElementById("el"+$idClickedRow)).data('name');
           var type = $(document.getElementById("el"+$idClickedRow)).data('type');
           document.getElementById("modal-name").value = name;
@@ -118,6 +119,7 @@
         }
         else if(recipient == 'Редактировать раздел'){
           document.getElementById("modal-type-group").style.display = "none";
+          document.getElementById("modal-desc-group").style.display = "block";
           var name = $(document.getElementById("sec"+$idClickedRow)).data('name');
           var desc = $(document.getElementById("sec"+$idClickedRow)).data('description');
           document.getElementById("modal-name").value = name;
