@@ -34,7 +34,7 @@
         echo '
         <tr id="el' .  $line["id_element"] . '" class="clickable-row element">
             <td class="cont"><button type="button" class="btn btn-teal btn-rounded btn-sm m-0 context_menu_button hidden" 
-                id="context_menu_button" onclick="showContextMenu(\'element\', 0, this)">&#8278;</button></td>
+                id="context_menu_button" onclick="showContextMenu(\'element\', ' .  $line["id_element"] . ', this)">&#8278;</button></td>
             <td class="section_name">' .  $line["name"] . '</td>
             <td>' .  $line["creation_date"] . '</td>
             <td>' .  $line["modification_date"] . '</td>

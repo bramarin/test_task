@@ -86,178 +86,213 @@
         });
       });
 
-        $('#modal_box').on('show.bs.modal', function (event) {
-          var button = $(event.relatedTarget) // Button that triggered the modal
-          var recipient = button.data('label')
-          var modal = $(this)
-          modal.find('.modal-title').text('' + recipient)
-          // show
-          if(recipient == 'Добавить элемент'){
-            document.getElementById("modal-type-group").style.display = "block";
-          }
-          else if(recipient == 'Добавить подраздел'){
-            document.getElementById("modal-type-group").style.display = "none";
-          }
-        })
+      $('#modal_box').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var recipient = button.data('label')
+        var modal = $(this)
+        modal.find('.modal-title').text('' + recipient)
+        // show
+        if(recipient == 'Добавить элемент'){
+          document.getElementById("modal-type-group").style.display = "block";
+        }
+        else if(recipient == 'Добавить подраздел'){
+          document.getElementById("modal-type-group").style.display = "none";
+        }
+      })
 
-        function addEntry(){
-          var id_parent =  $idClickedSecton; // $idClickedSecton - global var
-          var name = '\'' + document.getElementById("modal-name").value + '\'';
+      function addEntry(){
+        var id_parent =  $idClickedRow; // $idClickedRow - global var
+        var name = '\'' + document.getElementById("modal-name").value + '\'';
 
-          if($(document.getElementById("modal_box_label"))[0].innerText == 'Добавить подраздел'){
-            var description = '\'' + document.getElementById("modal-description").value + '\'';
-            $.ajax({
-              url: "add-new-section.php",
-              type: "get",
-              data: { 
-                id_parent: id_parent,
-                name: name,
-                description: description
-              },
-              success: function(data) {
-                  console.log("trial_page: ", "success");
-              },
-              error: function(xhr) {
-                  console.log("trial_page: ", xhr);
-              }
-            }); 
-          } else if($(document.getElementById("modal_box_label"))[0].innerText == 'Добавить элемент'){
-            var type = '\'' + document.getElementById("modal-type").value + '\'';
-            $.ajax({
-              url: "add-new-element.php",
-              type: "get",
-              data: { 
-                id_parent: id_parent,
-                name: name,
-                type: type
-              },
-              success: function(data) {
-                  console.log("trial_page: ", "success");
-              },
-              error: function(xhr) {
-                  console.log("trial_page: ", xhr);
-              }
-            }); 
+        if($(document.getElementById("modal_box_label"))[0].innerText == 'Добавить подраздел'){
+          var description = '\'' + document.getElementById("modal-description").value + '\'';
+          $.ajax({
+            url: "add-new-section.php",
+            type: "get",
+            data: { 
+              id_parent: id_parent,
+              name: name,
+              description: description
+            },
+            success: function(data) {
+              console.log("trial_page: ", "success: " + data);
+            },
+            error: function(xhr) {
+                console.log("trial_page: ", xhr);
+            }
+          }); 
+        } else if($(document.getElementById("modal_box_label"))[0].innerText == 'Добавить элемент'){
+          var type = '\'' + document.getElementById("modal-type").value + '\'';
+          $.ajax({
+            url: "add-new-element.php",
+            type: "get",
+            data: { 
+              id_parent: id_parent,
+              name: name,
+              type: type
+            },
+            success: function(data) {
+                console.log("trial_page: ", "success: " + data);
+            },
+            error: function(xhr) {
+                console.log("trial_page: ", xhr);
+            }
+          }); 
+        }
+        displayTable($thisSecionId);
+      }
+
+      function delElement(){
+        var id_element =  $idClickedRow; // $idClickedRow - global var
+        $.ajax({
+          url: "delete-element.php",
+          type: "get",
+          data: { 
+            id_element: id_element
+          },
+          success: function(data) {
+            console.log("trial_page: ", "success: " + data);
+          },
+          error: function(xhr) {
+              console.log("trial_page: ", xhr);
           }
+        }); 
+        displayTable($thisSecionId);
+      };
+      function delSection(){
+        var id_element =  $idClickedRow; // $idClickedRow - global var
+        $.ajax({
+          url: "delete-section.php",
+          type: "get",
+          data: { 
+            id_section: id_element
+          },
+          success: function(data) {
+              console.log("trial_page: ", "success: " + data);
+          },
+          error: function(xhr) {
+              console.log("trial_page: ", xhr);
+          }
+        }); 
+          displayTable($thisSecionId);
+      };
+
+
+      $thisSecionId = 0; // TODO replace it
+      $(document).on('click','.level', function(e){
+          console.log("trial_page: ", "level_link is clicked");
+          
+          var elements = $(this);
+          var elementId = elements[0].id;
+          var sectionID = elementId.replace(/\D/g, ""); // get first and only id of this .section, then replase non digit symbols with empty str
+          $thisSecionId = sectionID;
+          displayTable(sectionID);
+
+          $('#'+elementId).nextAll().remove();
+      });
+
+
+      $idClickedRow = null;
+      function showContextMenu(type, idOfDbEntry, element){
+        $idClickedRow=idOfDbEntry;
+
+        var wasThisMenuOpen = hideAnyContextMenu(element);
+        if(wasThisMenuOpen)
+          return;
+
+        if($(element).hasClass("hidden")){
+          var parent = $(element).parents( ".cont" );
+          if(type == 'section')
+            $(parent).after('<ul class="context_menu", id="context_menu"><li><a href="#" data-toggle="modal" data-target="#modal_box" data-label="Добавить подраздел">Добавить подраздел</a></li>' +
+                                                                        '<li><a href="#" data-toggle="modal" data-target="#modal_box" data-label="Добавить элемент">Добавить элемент</a></li>' +
+                                                                        '<li><a href="#">Редактировать</a></li>' +
+                                                                        '<li><a href="#">Переместить</a></li>' +
+                                                                        '<li><a href="#" onClick="delSection()">Удалить</a></li>' +
+                                                                        '</ul>');
+          if(type == 'element')
+            $(parent).after('<ul class="context_menu", id="context_menu"><li><a href="#">Редактировать</a></li>' +
+                                                                        '<li><a href="#">Переместить</a></li>' +
+                                                                        '<li><a href="#" onClick="delElement()">Удалить</a></li>' +
+                                                                        '</ul>');
+          $(element).removeClass('hidden');
+          console.log("trial_page: ", "menu revealed")
+        }
+        else{
+          hideContextMenu(element);
+        }
+      }
+
+      function hideContextMenu(element){
+        var contextMenu = document.getElementById("context_menu");
+        if(contextMenu != null){
+          contextMenu.remove(); 
+          $(element).addClass('hidden');
+          console.log("trial_page: ", "menu unrevealed")
+        }
+      }
+
+      function hideAnyContextMenu(clickedElement){
+        var contextMenu = document.getElementById("context_menu");
+        if(contextMenu != null){
+          var parent = contextMenu.previousSibling; // .cont
+          hideContextMenu(parent.childNodes[0]);
+          if(clickedElement === parent.childNodes[0])
+            return true;
+        }
+        return false;
+      }
+
+      $(document).ready(function(){
+        console.log("trial_page: ", "document ready");
+        const homeSectionId = 1;
+        displayTable(homeSectionId);
+      });
 
           
+      $(document).on('click','.section', function(e){
+        console.log("trial_page: ", "section is clicked");
+        if (!e.target.classList.contains("context_menu_button") && !(e.target.parentNode.parentNode.className == "context_menu")) {
+          var elements = $(this);
+          var elementId = elements[0].id;
+          var sectionID = elementId.replace(/\D/g, ""); // get first and only id of this .section, then replase non digit symbols with empty str
+          displayTable(sectionID);
 
-
+          //add path line
+          var sectionName = elements[0].getElementsByClassName("name")[0].innerHTML;
+          var pathElement = '<a id="' + elementId + '" class="level" href="#">' + '\\' + sectionName + '</a>';
+          var pathLineDock = document.getElementById("path_line");
+          $(pathLineDock.lastChild).after(pathElement);
         }
+      });
 
-        $(document).on('click','.level', function(e){
-            console.log("trial_page: ", "level_link is clicked");
-            
-            var elements = $(this);
-            var elementId = elements[0].id;
-            var sectionID = elementId.replace(/\D/g, ""); // get first and only id of this .section, then replase non digit symbols with empty str
-            displayTable(sectionID);
-
-            $('#'+elementId).nextAll().remove();
-        });
-
-
-        $idClickedSecton = null;
-        function showContextMenu(type, idOfDbEntry, element){
-          $idClickedSecton=idOfDbEntry;
-
-          var wasThisMenuOpen = hideAnyContextMenu(element);
-          if(wasThisMenuOpen)
-            return;
-
-          if($(element).hasClass("hidden")){
-            var parent = $(element).parents( ".cont" );
-            if(type == 'section')
-              $(parent).after('<ul class="context_menu", id="context_menu"><li><a href="#" data-toggle="modal" data-target="#modal_box" data-label="Добавить подраздел">Добавить подраздел</a></li>' +
-                                                                          '<li><a href="#" data-toggle="modal" data-target="#modal_box" data-label="Добавить элемент">Добавить элемент</a></li>' +
-                                                                          '<li><a href="#">Редактировать</a></li>' +
-                                                                          '<li><a href="#">Переместить</a></li>' +
-                                                                          '<li><a href="#">Удалить</a></li>' +
-                                                                          '</ul>');
-            if(type == 'element')
-              $(parent).after('<ul class="context_menu", id="context_menu"><li><a href="#">Редактировать</a></li>' +
-                                                                          '<li><a href="#">Переместить</a></li>' +
-                                                                          '<li><a href="#">Удалить</a></li>' +
-                                                                          '</ul>');
-            $(element).removeClass('hidden');
-            console.log("trial_page: ", "menu revealed")
-          }
-          else{
-            hideContextMenu(element);
-          }
+      $(document).on('click','.element', function(e){
+        if (!e.target.classList.contains("context_menu_button") && !(e.target.parentNode.parentNode.className == "context_menu")) {
+          var elements = $(this);
+          var sectionID = elements[0].id;
+          console.log("trial_page: ", "element is clicked");
         }
+      });
 
-        function hideContextMenu(element){
-          var contextMenu = document.getElementById("context_menu");
-          if(contextMenu != null){
-            contextMenu.remove(); 
-            $(element).addClass('hidden');
-            console.log("trial_page: ", "menu unrevealed")
+        
+      // param: parent node, sort options
+      function displayTable(parent_id) {
+        delElementByTagName("TBODY");
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            $(document.getElementById("thead")).after( this.responseText );
           }
-        }
+        };
+        xhttp.open("GET", "get-table.php?q=" + parent_id, true);
+        xhttp.send();
+      }
 
-        function hideAnyContextMenu(clickedElement){
-          var contextMenu = document.getElementById("context_menu");
-          if(contextMenu != null){
-            var parent = contextMenu.previousSibling; // .cont
-            hideContextMenu(parent.childNodes[0]);
-            if(clickedElement === parent.childNodes[0])
-              return true;
-          }
-          return false;
-        }
-
-        $(document).ready(function(){
-          console.log("trial_page: ", "document ready");
-          const homeSectionId = 1;
-          displayTable(homeSectionId);
-        });
-
-            
-        $(document).on('click','.section', function(e){
-          console.log("trial_page: ", "section is clicked");
-          if (!e.target.classList.contains("context_menu_button") && !(e.target.parentNode.parentNode.className == "context_menu")) {
-            var elements = $(this);
-            var elementId = elements[0].id;
-            var sectionID = elementId.replace(/\D/g, ""); // get first and only id of this .section, then replase non digit symbols with empty str
-            displayTable(sectionID);
-
-            //add path line
-            var sectionName = elements[0].getElementsByClassName("name")[0].innerHTML;
-            var pathElement = '<a id="' + elementId + '" class="level" href="#">' + '\\' + sectionName + '</a>';
-            var pathLineDock = document.getElementById("path_line");
-            $(pathLineDock.lastChild).after(pathElement);
-          }
-        });
-
-        $(document).on('click','.element', function(e){
-          if (!e.target.classList.contains("context_menu_button") && !(e.target.parentNode.parentNode.className == "context_menu")) {
-            var elements = $(this);
-            var sectionID = elements[0].id;
-            console.log("trial_page: ", "element is clicked");
-          }
-        });
-
-            
-        // param: parent node, sort options
-        function displayTable(parent_id) {
-          delElementByTagName("TBODY");
-
-          var xhttp = new XMLHttpRequest();
-          xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-              $(document.getElementById("thead")).after( this.responseText );
-            }
-          };
-          xhttp.open("GET", "get-table.php?q=" + parent_id, true);
-          xhttp.send();
-        }
-
-        function delElementByTagName(tag){
-          var element = document.getElementsByTagName(tag)[0];
-          if(element)
-            element.remove(); 
-        }
+      function delElementByTagName(tag){
+        var element = document.getElementsByTagName(tag)[0];
+        if(element)
+          element.remove(); 
+      }
 
     </script>
 

@@ -4,9 +4,9 @@
       die('Could not connect: ' . mysql_error());
   }
 
-  $id_element = $_GET["id_element"];
+  $id_section = $_GET["id_section"];
       
-  $query = "DELETE FROM element WHERE id_element = $id_element;";
+  $query = "DELETE FROM section WHERE id_section = $id_section;";
   echo($query);
 
   $result = mysqli_query($dbconn, $query) or die('Ошибка запроса: ' . mysqli_error());
